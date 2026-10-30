@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Dark Team Manager</title>
+</head>
+<body>
+
+    <h1>Dark Team Manager</h1>
+    <h2>Gestão de Modalidades</h2>
+
+    <h3>Adicionar modalidade</h3>
+
+    <form method="POST">
+        <label for="nome">Nome do jogo:</label>
+        <input type="text" id="nome" name="nome" required>
+
+        <br><br>
+
+        <label for="descricao">Descrição:</label>
+        <textarea id="descricao" name="descricao"></textarea>
+
+        <br><br>
+
+        <button type="submit">Adicionar modalidade</button>
+    </form>
+
+    <hr>
+
+    <h3>Modalidades registadas</h3>
+
+    {% if modalidades %}
+        <ul>
+            {% for modalidade in modalidades %}
+                <li>
+                    <strong>{{ modalidade["nome"] }}</strong>
+                    - {{ modalidade["descricao"] or "Sem descrição" }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Ainda não existem modalidades registadas.</p>
+    {% endif %}
+
+    <a href="/">Voltar ao início</a>
+
+</body>
+</html>
