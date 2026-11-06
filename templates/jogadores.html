@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Team Manager - Jogadores</title>
+</head>
+<body>
+
+    <h1>Dark Team Manager</h1>
+    <h2>Gestão de Jogadores</h2>
+
+    {% with mensagens = get_flashed_messages(with_categories=true) %}
+        {% for categoria, mensagem in mensagens %}
+            <p>{{ mensagem }}</p>
+        {% endfor %}
+    {% endwith %}
+
+    <h3>Registar jogador</h3>
+
+    <form method="POST">
+
+        <label for="nome">Nome completo:</label>
+        <input
+            type="text"
+            id="nome"
+            name="nome"
+            placeholder="Nome do jogador"
+            required
+        >
+
+        <br><br>
+
+        <label for="nickname">Nickname:</label>
+        <input
+            type="text"
+            id="nickname"
+            name="nickname"
+            placeholder="Ex: Disano"
+            required
+        >
+
+        <br><br>
+
+        <label for="email">Email:</label>
+        <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="email@exemplo.com"
+        >
+        <br><br>
+    
+        <label for="telemovel">Telemóvel:</label>
+        <input 
+            type="text" 
+            id="telemovel" 
+            name="telemovel"
+            placeholder="Ex: 912345678"
+        >
+        <br><br>
+
+       <div>   </div>
+
+        <br><br>
+
+        <button type="submit">Registar jogador</button>
+
+    </form>
+
+    <hr>
+
+    <h3>Jogadores registados</h3>
+
+    {% if jogadores %}
+        <ul>
+            {% for jogador in jogadores %}
+                <li>
+                    <strong>{{ jogador["nickname"] }}</strong>
+                    — {{ jogador["nome"] }}
+                    — {{ jogador["email"] or "Sem email" }}
+                    - {{ jogador["telemovel"] or "Sem telemóvel" }}
+                    
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Ainda não existem jogadores registados.</p>
+    {% endif %}
+
+    <hr>
+
+    <a href="/">Voltar ao início</a>
+    |
+    <a href="/equipa">Ver equipas</a>
+    |
+    <a href="/modalidades">Ver modalidades</a>
+
+</body>
+</html>

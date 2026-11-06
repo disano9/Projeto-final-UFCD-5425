@@ -4,6 +4,8 @@ from config import SECRET_KEY
 from database.db import init_db
 from presentation.modalidade_routes import modalidade_bp
 from presentation.equipa_routes import equipa_bp
+from presentation.jogador_routes import jogador_bp
+
 
 
 
@@ -14,6 +16,7 @@ def create_app():
     init_db()
     app.register_blueprint(modalidade_bp)
     app.register_blueprint(equipa_bp)
+    app.register_blueprint(jogador_bp)
     
 
     @app.route("/")
