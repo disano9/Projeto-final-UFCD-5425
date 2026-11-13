@@ -1,8 +1,10 @@
+from datetime import date
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-
 from services.equipa_services import adicionar_equipa, obter_equipas
 from services.modalidade_service import obter_modalidades
-from services.jogador_services import (obter_jogadores_sem_equipa,adicionar_jogador_a_equipa)
+from services.jogador_services import (obter_jogadores_sem_equipa,adicionar_jogador_a_equipa, retirar_jogador_da_equipa)
+from services.equipa_services import (obter_jogadores_da_equipa)
+
 
 equipa_bp = Blueprint("equipa", __name__)
 
@@ -65,3 +67,41 @@ def associar_jogador():
         jogadores=jogadores,
         equipas=equipas
     )
+@equipa_bp.route("/equipa/<int:equipa_id>/plantel")
+def consultar_plantel(equipa_id):
+    equipas = obter_equipas()
+
+    equipa = next(
+        (e for e in equipas if e["id"] == equipa_id),
+        None
+    )
+
+    if equipa is None:
+        flash("Equipa não encontrada.", "error")
+        return redirect(url_for("equipa.listar"))
+
+    jogadores = obter_jogadores_da_equipa(equipa_id)
+
+    return render_template(
+        "plantel.html",
+        equipa=equipa,
+        jogadores=jogadores
+    )
+
+@equipa_bp.route(
+    "/equipa/<int:equipa_id>/jogador/<int:jogador_id>/remover",
+    methods=["POST"]
+)
+def remover_jogador(equipa_id, jogador_id):
+    data_saida = date.today().isoformat()
+
+    sucesso, mensagem = retirar_jogador_da_equipa(
+        jogador_id, equipa_id, data_saida
+    )
+
+    flash(mensagem, "success" if sucesso else "error")
+
+    return redirect(url_for(
+        "equipa.consultar_plantel",
+        equipa_id=equipa_id
+    ))

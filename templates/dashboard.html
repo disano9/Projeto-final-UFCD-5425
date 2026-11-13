@@ -1,0 +1,62 @@
+
+{% extends "base/layout.html" %}
+
+{% block title %}Dashboard | Dark Team Manager{% endblock %}
+
+{% block content %}
+
+<div class="page-heading">
+    <div>
+        <h1>Dashboard</h1>
+        <p>Bem-vindo ao centro de gestão da Dark Team.</p>
+    </div>
+</div>
+
+<div class="dashboard-welcome">
+    <div>
+        <span class="welcome-label">DARK TEAM MANAGER</span>
+        <h2>Gere a tua organização.</h2>
+        <p>Controla as modalidades, equipas e jogadores num único lugar.</p>
+    </div>
+    <div class="welcome-decoration">DT</div>
+</div>
+
+<div class="dashboard-stats">
+
+    <div class="stat-card">
+        <div class="stat-icon purple">G</div>
+        <div>
+            <p>Modalidades</p>
+            <h2>{{ total_modalidades }}</h2>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon blue">E</div>
+        <div>
+            <p>Equipas</p>
+            <h2>{{ total_equipas }}</h2>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon green">J</div>
+        <div>
+            <p>Jogadores</p>
+            <h2>{{ total_jogadores }}</h2>
+        </div>
+    </div>
+
+</div>
+
+<div class="content-card dashboard-shortcuts">
+    <h2>Acesso rápido</h2>
+
+    <div class="shortcut-links">
+        <a href="{{ url_for('modalidade.listar') }}">Gerir modalidades</a>
+        <a href="{{ url_for('equipa.listar') }}">Gerir equipas</a>
+        <a href="{{ url_for('jogador.jogadores') }}">Gerir jogadores</a>
+    </div>
+</div>
+
+{% endblock %}

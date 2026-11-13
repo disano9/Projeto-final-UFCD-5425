@@ -81,7 +81,10 @@
                     — {{ jogador["nome"] }}
                     — {{ jogador["email"] or "Sem email" }}
                     - {{ jogador["telemovel"] or "Sem telemóvel" }}
-                    
+                 
+                    <a href="{{ url_for('jogador.editar', jogador_id=jogador['id']) }}">
+                 Editar
+                  </a>
                 </li>
             {% endfor %}
         </ul>

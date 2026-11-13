@@ -1,7 +1,8 @@
 
 from repositories.equipa_repository import (
     criar_equipa,
-    listar_equipas
+    listar_equipas,
+    listar_jogadores_da_equipa
 )
 
 
@@ -26,5 +27,8 @@ def adicionar_equipa(nome, descricao, modalidade_id):
 
 def obter_equipas():
     return listar_equipas()
+
+def obter_jogadores_da_equipa(equipa_id):
+    return listar_jogadores_da_equipa(equipa_id)
 
     

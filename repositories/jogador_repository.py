@@ -70,3 +70,38 @@ def associar_jogador_equipa(jogador_id, equipa_id, posicao, data_entrada):
         connection.commit()
     finally:
         connection.close()
+
+def atualizar_jogador(jogador_id, nome, nickname, email, telemovel):
+    connection = get_connection()
+
+    try:
+        connection.execute("""
+            UPDATE jogadores
+            SET nome = ?,
+                nickname = ?,
+                email = ?,
+                telemovel = ?
+            WHERE id = ?
+        """, (nome, nickname, email, telemovel, jogador_id))
+
+        connection.commit()
+
+    finally:
+        connection.close()
+
+def remover_jogador_da_equipa(jogador_id, equipa_id, data_saida):
+    connection = get_connection()
+
+    try:
+        connection.execute("""
+            UPDATE equipa_jogadores
+            SET data_saida = ?
+            WHERE jogador_id = ?
+            AND equipa_id = ?
+            AND data_saida IS NULL
+        """, (data_saida, jogador_id, equipa_id))
+
+        connection.commit()
+
+    finally:
+        connection.close()

@@ -1,88 +1,108 @@
 
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dark Team Manager - Equipas</title>
-</head>
-<body>
+{% extends "base/layout.html" %}
 
-    <h1>Dark Team Manager</h1>
-    <h2>Gestão de Equipas</h2>
+{% block title %}Equipas | Dark Team Manager{% endblock %}
 
-    {% with mensagens = get_flashed_messages(with_categories=true) %}
-        {% for categoria, mensagem in mensagens %}
-            <p>{{ mensagem }}</p>
-        {% endfor %}
-    {% endwith %}
+{% block content %}
 
-    <h3>Adicionar equipa</h3>
+<div class="page-heading">
+    <div>
+        <h1>Gestão de Equipas</h1>
+        <p>Cria, organiza e gere as equipas da Dark Team.</p>
+    </div>
+</div>
+
+<div class="content-card">
+    <h2>Adicionar equipa</h2>
 
     {% if modalidades %}
-        <form method="POST">
+        <form method="POST" class="form-container">
 
-            <label for="nome">Nome da equipa:</label>
-            <input
-                type="text"
-                id="nome"
-                name="nome"
-                placeholder="Ex: Dark Team Academy"
-                required
-            >
+            <div class="form-group">
+                <label for="nome">Nome da equipa</label>
+                <input
+                    type="text"
+                    id="nome"
+                    name="nome"
+                    placeholder="Ex: Dark Team Academy"
+                    required
+                >
+            </div>
 
-            <br><br>
+            <div class="form-group">
+                <label for="descricao">Descrição</label>
+                <textarea
+                    id="descricao"
+                    name="descricao"
+                    placeholder="Descrição da equipa"
+                ></textarea>
+            </div>
 
-            <label for="descricao">Descrição:</label>
-            <textarea
-                id="descricao"
-                name="descricao"
-                placeholder="Descrição da equipa"
-            ></textarea>
+            <div class="form-group">
+                <label for="modalidade_id">Modalidade</label>
+                <select id="modalidade_id" name="modalidade_id" required>
+                    <option value="">Seleciona uma modalidade</option>
 
-            <br><br>
-
-            <label for="modalidade_id">Modalidade:</label>
-            <select id="modalidade_id" name="modalidade_id" required>
-                <option value="">Seleciona uma modalidade</option>
-
-                {% for modalidade in modalidades %}
-                    <option value="{{ modalidade['id'] }}">
-                        {{ modalidade['nome'] }}
-                    </option>
-                {% endfor %}
-            </select>
-
-            <br><br>
+                    {% for modalidade in modalidades %}
+                        <option value="{{ modalidade['id'] }}">
+                            {{ modalidade['nome'] }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
 
             <button type="submit">Adicionar equipa</button>
 
         </form>
     {% else %}
-        <p>Não existem modalidades registadas. Cria primeiro uma modalidade.</p>
+        <p class="empty-message">
+            Ainda não existem modalidades registadas.
+            Cria primeiro uma modalidade.
+        </p>
     {% endif %}
+</div>
 
-    <hr>
-
-    <h3>Equipas registadas</h3>
+<div class="content-card">
+    <h2>Equipas registadas</h2>
 
     {% if equipas %}
-        <ul>
+        <div class="team-grid">
+
             {% for equipa in equipas %}
-                <li>
-                    <strong>{{ equipa["nome"] }}</strong>
-                    — {{ equipa["modalidade"] }}
-                    — {{ equipa["descricao"] or "Sem descrição" }}
-                </li>
+                <div class="team-card">
+
+                    <div class="team-card-header">
+                        <div class="team-icon">DT</div>
+
+                        <span class="team-status">Registada</span>
+                    </div>
+
+                    <h3>{{ equipa["nome"] }}</h3>
+
+                    <p class="team-game">
+                        {{ equipa["modalidade"] }}
+                    </p>
+
+                    <p class="team-description">
+                        {{ equipa["descricao"] or "Sem descrição disponível." }}
+                    </p>
+
+                    <a
+                        class="team-button"
+                        href="{{ url_for('equipa.consultar_plantel', equipa_id=equipa['id']) }}"
+                    >
+                        Ver plantel →
+                    </a>
+
+                </div>
             {% endfor %}
-        </ul>
+
+        </div>
     {% else %}
-        <p>Ainda não existem equipas registadas.</p>
+        <p class="empty-message">
+            Ainda não existem equipas registadas.
+        </p>
     {% endif %}
+</div>
 
-    <a href="/">Voltar ao início</a>
-    |
-    <a href="/modalidades">Ver modalidades</a>
-
-</body>
-</html>
+{% endblock %}

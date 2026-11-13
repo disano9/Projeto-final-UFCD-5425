@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Plantel - {{ equipa['nome'] }}</title>
+</head>
+<body>
+
+    <h1>Plantel da equipa: {{ equipa['nome'] }}</h1>
+
+    <p><strong>Modalidade:</strong> {{ equipa['modalidade'] }}</p>
+    <p><strong>Descrição:</strong> {{ equipa['descricao'] }}</p>
+
+    <h2>Jogadores</h2>
+
+    {% if jogadores %}
+        <table border="1" cellpadding="8">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Nickname</th>
+                    <th>Posição</th>
+                    <th>Data de entrada</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for jogador in jogadores %}
+                <form method="POST" action="{{ url_for(
+    'equipa.remover_jogador',
+    equipa_id=equipa['id'],
+    jogador_id=jogador['id']
+) }}">
+    <button type="submit"
+            onclick="return confirm('Tens a certeza que queres remover este jogador da equipa?')">
+        Remover da equipa
+    </button>
+</form>
+                    <tr>
+                        <td>{{ jogador['nome'] }}</td>
+                        <td>{{ jogador['nickname'] }}</td>
+                        <td>{{ jogador['posicao'] }}</td>
+                        <td>{{ jogador['data_entrada'] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Esta equipa ainda não tem jogadores associados.</p>
+    {% endif %}
+
+    <br>
+
+    <a href="{{ url_for('equipa.listar') }}">Voltar às equipas</a>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Dark Team Manager{% endblock %}</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <div class="app-container">
+
+        <aside class="sidebar">
+
+            <div class="logo">
+                <div class="logo">
+                <a href="{{ url_for('home') }}">
+                <img src="{{ url_for('static', filename='images/dark-team-logo.png') }}"
+             alt="Dark Team Logo">
+               </a>
+            </div>
+            </div>
+
+            <nav>
+                <p class="menu-label">GESTÃO</p>
+
+                <a href="{{ url_for('home') }}">Dashboard</a>
+                <a href="{{ url_for('modalidade.listar') }}">Modalidades</a>
+                <a href="{{ url_for('equipa.listar') }}">Equipas</a>
+                <a href="{{ url_for('jogador.jogadores') }}">Jogadores</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <span>Dark Team Manager</span>
+                <small>Gestão de Esports</small>
+            </div>
+
+        </aside>
+
+        <main class="main-content">
+
+            <header class="topbar">
+                <div>
+                    <h3>Dark Team Manager</h3>
+                    <p>Plataforma de gestão de esports</p>
+                </div>
+
+                <div class="status">
+                    <span></span>
+                    Sistema ativo
+                </div>
+            </header>
+
+            <section class="page-content">
+
+                {% with mensagens = get_flashed_messages(with_categories=true) %}
+                    {% if mensagens %}
+                        {% for categoria, mensagem in mensagens %}
+                            <div class="flash {{ categoria }}">
+                                {{ mensagem }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                {% block content %}{% endblock %}
+
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
+</html>

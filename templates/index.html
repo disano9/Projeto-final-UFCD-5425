@@ -1,49 +1,75 @@
 
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <title>Dark Team Manager</title>
-</head>
-<body>
+{% extends "base/layout.html" %}
 
-    <h1>Dark Team Manager</h1>
-    <h2>Gestão de Modalidades</h2>
+{% block title %}Modalidades | Dark Team Manager{% endblock %}
 
-    <h3>Adicionar modalidade</h3>
+{% block content %}
 
-    <form method="POST">
-        <label for="nome">Nome do jogo:</label>
-        <input type="text" id="nome" name="nome" required>
+<div class="page-heading">
+    <div>
+        <h1>Modalidades</h1>
+        <p>Gere os jogos disponíveis na organização.</p>
+    </div>
+</div>
 
-        <br><br>
+<div class="content-card">
 
-        <label for="descricao">Descrição:</label>
-        <textarea id="descricao" name="descricao"></textarea>
+    <h2>Adicionar modalidade</h2>
 
-        <br><br>
+    <form method="POST" class="form-container">
+
+        <div class="form-group">
+            <label for="nome">Nome do jogo</label>
+            <input type="text" id="nome" name="nome"
+                   placeholder="Ex: League of Legends" required>
+        </div>
+
+        <div class="form-group">
+            <label for="descricao">Descrição</label>
+            <textarea id="descricao" name="descricao"
+                      placeholder="Descrição da modalidade"></textarea>
+        </div>
 
         <button type="submit">Adicionar modalidade</button>
+
     </form>
 
-    <hr>
+</div>
 
-    <h3>Modalidades registadas</h3>
+<div class="content-card">
+
+    <h2>Modalidades registadas</h2>
 
     {% if modalidades %}
-        <ul>
-            {% for modalidade in modalidades %}
-                <li>
-                    <strong>{{ modalidade["nome"] }}</strong>
-                    - {{ modalidade["descricao"] or "Sem descrição" }}
-                </li>
-            {% endfor %}
-        </ul>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jogo</th>
+                        <th>Descrição</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for modalidade in modalidades %}
+                    <tr>
+                        <td>{{ modalidade["nome"] }}</td>
+                        <td>{{ modalidade["descricao"] or "Sem descrição" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
     {% else %}
-        <p>Ainda não existem modalidades registadas.</p>
+
+        <p class="empty-message">
+            Ainda não existem modalidades registadas.
+        </p>
+
     {% endif %}
 
-    <a href="/">Voltar ao início</a>
+</div>
 
-</body>
-</html>
+{% endblock %}
