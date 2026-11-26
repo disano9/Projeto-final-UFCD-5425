@@ -105,3 +105,56 @@ def remover_jogador_da_equipa(jogador_id, equipa_id, data_saida):
 
     finally:
         connection.close()
+
+
+def obter_jogador_por_email(email):
+    connection = get_connection()
+
+    try:
+        jogador = connection.execute(
+            """
+            SELECT *
+            FROM jogadores
+            WHERE email = ?
+            """,
+            (email,)
+        ).fetchone()
+
+        return jogador
+
+    finally:
+        connection.close()
+
+def obter_area_pessoal(utilizador_id):
+    connection = get_connection()
+
+    try:
+        dados = connection.execute("""
+            SELECT
+                j.id AS jogador_id,
+                j.nome,
+                j.nickname,
+                j.email,
+                j.telemovel,
+                e.nome AS equipa,
+                ej.posicao,
+                ej.data_entrada,
+                m.nome AS modalidade
+            FROM utilizadores u
+            INNER JOIN jogadores j
+                ON u.jogador_id = j.id
+            LEFT JOIN equipa_jogadores ej
+                ON j.id = ej.jogador_id
+                AND ej.data_saida IS NULL
+            LEFT JOIN equipas e
+                ON ej.equipa_id = e.id
+            LEFT JOIN modalidades m
+                ON e.modalidade_id = m.id
+            WHERE u.id = ?
+              AND u.role = 'jogador'
+        """, (utilizador_id,)).fetchone()
+
+        return dados
+
+    finally:
+        connection.close()

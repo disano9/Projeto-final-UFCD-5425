@@ -45,3 +45,20 @@ def init_db():
            ) 
         """)
     
+        # Tabela de Utilizadores
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS utilizadores (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT NOT NULL UNIQUE,
+                email TEXT NOT NULL UNIQUE,
+                password_hash TEXT NOT NULL,
+                role TEXT NOT NULL
+                    CHECK (role IN ('admin', 'treinador', 'jogador')),
+                jogador_id INTEGER UNIQUE,
+                estado TEXT NOT NULL DEFAULT 'pendente'
+                    CHECK (estado IN ('pendente', 'aprovado', 'rejeitado')),
+                data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (jogador_id)
+                    REFERENCES jogadores(id)
+            )
+        """)

@@ -1,0 +1,85 @@
+
+{% extends "base/layout.html" %}
+
+{% block title %}Pedidos de Registo | Dark Team Manager{% endblock %}
+
+{% block content %}
+
+<div class="page-heading">
+    <div>
+        <h1>Pedidos de Registo</h1>
+        <p>Gere os pedidos de acesso à organização.</p>
+    </div>
+</div>
+
+<div class="content-card">
+    <h2>Pedidos pendentes</h2>
+
+    {% if utilizadores %}
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Data de registo</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for utilizador in utilizadores %}
+                        <tr>
+                            <td>
+                                <strong>{{ utilizador['username'] }}</strong>
+                            </td>
+
+                            <td>{{ utilizador['email'] }}</td>
+
+                            <td>{{ utilizador['data_criacao'] }}</td>
+
+                            <td>
+                                <div class="action-buttons">
+
+                                    <form
+                                        method="POST"
+                                        action="{{ url_for('auth.aprovar', utilizador_id=utilizador['id']) }}"
+                                    >
+                                        <button type="submit">
+                                            Aprovar
+                                        </button>
+                                    </form>
+
+                                    <form
+                                        method="POST"
+                                        action="{{ url_for('auth.rejeitar', utilizador_id=utilizador['id']) }}"
+                                        onsubmit="return confirm('Tens a certeza que queres rejeitar este pedido?');"
+                                    >
+                                        <button
+                                            type="submit"
+                                            class="danger-button"
+                                        >
+                                            Rejeitar
+                                        </button>
+                                    </form>
+
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    {% else %}
+
+        <p class="empty-message">
+            Não existem pedidos de registo pendentes.
+        </p>
+
+    {% endif %}
+</div>
+
+{% endblock %}
+    

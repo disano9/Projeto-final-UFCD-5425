@@ -1,40 +1,67 @@
+
 from datetime import date
+
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from services.equipa_services import adicionar_equipa, obter_equipas
+
+from services.equipa_services import (
+    adicionar_equipa,
+    obter_equipas,
+    obter_jogadores_da_equipa
+)
+
 from services.modalidade_service import obter_modalidades
-from services.jogador_services import (obter_jogadores_sem_equipa,adicionar_jogador_a_equipa, retirar_jogador_da_equipa)
-from services.equipa_services import (obter_jogadores_da_equipa)
+
+from services.jogador_services import (
+    obter_jogadores_sem_equipa,
+    adicionar_jogador_a_equipa,
+    retirar_jogador_da_equipa
+)
+
+from presentation.permissions import roles_required
 
 
 equipa_bp = Blueprint("equipa", __name__)
 
+
+# Listar e adicionar equipas
 @equipa_bp.route("/equipa", methods=["GET", "POST"])
+@roles_required("admin", "treinador")
 def listar():
+
     if request.method == "POST":
         nome = request.form.get("nome", "")
         descricao = request.form.get("descricao", "")
         modalidade_id = request.form.get("modalidade_id", "")
 
         if not modalidade_id.isdigit():
-          flash("Selecionar uma modalidade válida.", "error")
-          return redirect(url_for("equipa.listar"))
+            flash("Selecionar uma modalidade válida.", "error")
+            return redirect(url_for("equipa.listar"))
 
-        sucesso, mensagem = adicionar_equipa(nome, descricao, int(modalidade_id))
+        sucesso, mensagem = adicionar_equipa(
+            nome,
+            descricao,
+            int(modalidade_id)
+        )
 
-        if sucesso:
-           flash(mensagem, "success")
-        else:
-           flash(mensagem, "error")
+        flash(mensagem, "success" if sucesso else "error")
 
         return redirect(url_for("equipa.listar"))
-    
+
     equipas = obter_equipas()
     modalidades = obter_modalidades()
 
-    return render_template("equipas.html", equipas=equipas, modalidades=modalidades)
+    return render_template(
+        "equipas.html",
+        equipas=equipas,
+        modalidades=modalidades
+    )
 
+
+# Associar jogadores a equipas
 @equipa_bp.route("/associar-jogador", methods=["GET", "POST"])
+@roles_required("admin", "treinador")
 def associar_jogador():
+
     if request.method == "POST":
         jogador_id = request.form.get("jogador_id", "")
         equipa_id = request.form.get("equipa_id", "")
@@ -57,6 +84,7 @@ def associar_jogador():
         )
 
         flash(mensagem, "success" if sucesso else "error")
+
         return redirect(url_for("equipa.associar_jogador"))
 
     jogadores = obter_jogadores_sem_equipa()
@@ -67,8 +95,13 @@ def associar_jogador():
         jogadores=jogadores,
         equipas=equipas
     )
+
+
+# Consultar plantel de uma equipa
 @equipa_bp.route("/equipa/<int:equipa_id>/plantel")
+@roles_required("admin", "treinador")
 def consultar_plantel(equipa_id):
+
     equipas = obter_equipas()
 
     equipa = next(
@@ -88,15 +121,21 @@ def consultar_plantel(equipa_id):
         jogadores=jogadores
     )
 
+
+# Remover jogador de uma equipa
 @equipa_bp.route(
     "/equipa/<int:equipa_id>/jogador/<int:jogador_id>/remover",
     methods=["POST"]
 )
+@roles_required("admin", "treinador")
 def remover_jogador(equipa_id, jogador_id):
+
     data_saida = date.today().isoformat()
 
     sucesso, mensagem = retirar_jogador_da_equipa(
-        jogador_id, equipa_id, data_saida
+        jogador_id,
+        equipa_id,
+        data_saida
     )
 
     flash(mensagem, "success" if sucesso else "error")

@@ -28,26 +28,67 @@
             <nav>
                 <p class="menu-label">GESTÃO</p>
 
-                <a href="{{ url_for('home') }}">Dashboard</a>
+                {% if session.get('user_id') %}
 
-                <a href="{{ url_for('modalidade.listar') }}">
-                    Modalidades
-                </a>
+                    <a href="{{ url_for('home') }}">Dashboard</a>
 
-                <a href="{{ url_for('equipa.listar') }}">
-                    Equipas
-                </a>
+                    {% if session.get('role') == 'jogador' %}
+                        <a href="{{ url_for('jogador.minha_area') }}">
+                            A Minha Área
+                        </a>
+                    {% endif %}
 
-                <a href="{{ url_for('equipa.associar_jogador') }}">
-                    Associar Jogador
-                </a>
+                    {% if session.get('role') in ['admin', 'treinador'] %}
 
-                <a href="{{ url_for('jogador.jogadores') }}">
-                    Jogadores
-                </a>
+                        <a href="{{ url_for('modalidade.listar') }}">
+                            Modalidades
+                        </a>
+
+                        <a href="{{ url_for('equipa.listar') }}">
+                            Equipas
+                        </a>
+
+                        <a href="{{ url_for('equipa.associar_jogador') }}">
+                            Associar Jogador
+                        </a>
+
+                        <a href="{{ url_for('jogador.jogadores') }}">
+                            Jogadores
+                        </a>
+
+                    {% endif %}
+
+                    {% if session.get('role') == 'admin' %}
+                        <p class="menu-label">ADMINISTRAÇÃO</p>
+
+                        <a href="{{ url_for('auth.pedidos') }}">
+                            Pedidos de Registo
+                        </a>
+                    {% endif %}
+
+                {% else %}
+
+                    <a href="{{ url_for('auth.login') }}">
+                        Iniciar Sessão
+                    </a>
+
+                    <a href="{{ url_for('auth.registo') }}">
+                        Criar Conta
+                    </a>
+
+                {% endif %}
             </nav>
 
             <div class="sidebar-footer">
+                {% if session.get('user_id') %}
+                    <strong>{{ session.get('username') }}</strong>
+                    <small>Perfil: {{ session.get('role') }}</small>
+
+                    <a href="{{ url_for('auth.logout') }}">
+                        Terminar Sessão
+                    </a>
+                {% endif %}
+
                 <span>Dark Team Manager</span>
                 <small>Gestão de Esports</small>
             </div>

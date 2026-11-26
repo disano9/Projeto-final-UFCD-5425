@@ -1,0 +1,77 @@
+
+{% extends "base/layout.html" %}
+
+{% block title %}A Minha Área | Dark Team Manager{% endblock %}
+
+{% block content %}
+
+<div class="page-heading">
+    <div>
+        <h1>A Minha Área</h1>
+        <p>Consulta a tua informação pessoal e competitiva.</p>
+    </div>
+</div>
+
+<div class="content-card">
+    <h2>Dados pessoais</h2>
+
+    <div class="detail-grid">
+        <div>
+            <strong>Nome</strong>
+            <p>{{ jogador['nome'] }}</p>
+        </div>
+
+        <div>
+            <strong>Nickname</strong>
+            <p>{{ jogador['nickname'] }}</p>
+        </div>
+
+        <div>
+            <strong>Email</strong>
+            <p>{{ jogador['email'] or 'Não definido' }}</p>
+        </div>
+
+        <div>
+            <strong>Telemóvel</strong>
+            <p>{{ jogador['telemovel'] or 'Não definido' }}</p>
+        </div>
+    </div>
+</div>
+
+<div class="content-card">
+    <h2>Informação competitiva</h2>
+
+    {% if jogador['equipa'] %}
+
+        <div class="detail-grid">
+            <div>
+                <strong>Equipa</strong>
+                <p>{{ jogador['equipa'] }}</p>
+            </div>
+
+            <div>
+                <strong>Modalidade</strong>
+                <p>{{ jogador['modalidade'] or 'Não definida' }}</p>
+            </div>
+
+            <div>
+                <strong>Posição</strong>
+                <p>{{ jogador['posicao'] }}</p>
+            </div>
+
+            <div>
+                <strong>Data de entrada</strong>
+                <p>{{ jogador['data_entrada'] }}</p>
+            </div>
+        </div>
+
+    {% else %}
+
+        <p class="empty-message">
+            Atualmente não estás associado a nenhuma equipa.
+        </p>
+
+    {% endif %}
+</div>
+
+{% endblock %}
