@@ -17,21 +17,34 @@
         <aside class="sidebar">
 
             <div class="logo">
-                <div class="logo">
                 <a href="{{ url_for('home') }}">
-                <img src="{{ url_for('static', filename='images/dark-team-logo.png') }}"
-             alt="Dark Team Logo">
-               </a>
-            </div>
+                    <img
+                        src="{{ url_for('static', filename='images/dark-team-logo.png') }}"
+                        alt="Dark Team Logo"
+                    >
+                </a>
             </div>
 
             <nav>
                 <p class="menu-label">GESTÃO</p>
 
                 <a href="{{ url_for('home') }}">Dashboard</a>
-                <a href="{{ url_for('modalidade.listar') }}">Modalidades</a>
-                <a href="{{ url_for('equipa.listar') }}">Equipas</a>
-                <a href="{{ url_for('jogador.jogadores') }}">Jogadores</a>
+
+                <a href="{{ url_for('modalidade.listar') }}">
+                    Modalidades
+                </a>
+
+                <a href="{{ url_for('equipa.listar') }}">
+                    Equipas
+                </a>
+
+                <a href="{{ url_for('equipa.associar_jogador') }}">
+                    Associar Jogador
+                </a>
+
+                <a href="{{ url_for('jogador.jogadores') }}">
+                    Jogadores
+                </a>
             </nav>
 
             <div class="sidebar-footer">

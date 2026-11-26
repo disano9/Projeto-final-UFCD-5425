@@ -1,57 +1,110 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <title>Plantel - {{ equipa['nome'] }}</title>
-</head>
-<body>
 
-    <h1>Plantel da equipa: {{ equipa['nome'] }}</h1>
+{% extends "base/layout.html" %}
 
-    <p><strong>Modalidade:</strong> {{ equipa['modalidade'] }}</p>
-    <p><strong>Descrição:</strong> {{ equipa['descricao'] }}</p>
+{% block title %}Plantel | {{ equipa['nome'] }} | Dark Team Manager{% endblock %}
 
-    <h2>Jogadores</h2>
+{% block content %}
+
+<div class="page-heading">
+    <div>
+        <h1>Plantel da equipa</h1>
+        <p>Consulta e gere os jogadores associados à equipa.</p>
+    </div>
+</div>
+
+<!-- Informação da equipa -->
+<div class="content-card">
+    <h2>{{ equipa['nome'] }}</h2>
+
+    <div class="player-details">
+        <div>
+            <span>Modalidade</span>
+            <p>{{ equipa['modalidade'] }}</p>
+        </div>
+
+        <div>
+            <span>Descrição</span>
+            <p>{{ equipa['descricao'] or "Sem descrição disponível." }}</p>
+        </div>
+
+        <div>
+            <span>Total de jogadores</span>
+            <p>{{ jogadores|length }}</p>
+        </div>
+    </div>
+</div>
+
+<!-- Lista de jogadores -->
+<div class="content-card">
+    <h2>Jogadores do plantel</h2>
 
     {% if jogadores %}
-        <table border="1" cellpadding="8">
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Nickname</th>
-                    <th>Posição</th>
-                    <th>Data de entrada</th>
-                </tr>
-            </thead>
 
-            <tbody>
-                {% for jogador in jogadores %}
-                <form method="POST" action="{{ url_for(
-    'equipa.remover_jogador',
-    equipa_id=equipa['id'],
-    jogador_id=jogador['id']
-) }}">
-    <button type="submit"
-            onclick="return confirm('Tens a certeza que queres remover este jogador da equipa?')">
-        Remover da equipa
-    </button>
-</form>
+        <div class="table-container">
+            <table>
+                <thead>
                     <tr>
-                        <td>{{ jogador['nome'] }}</td>
-                        <td>{{ jogador['nickname'] }}</td>
-                        <td>{{ jogador['posicao'] }}</td>
-                        <td>{{ jogador['data_entrada'] }}</td>
+                        <th>Nome</th>
+                        <th>Nickname</th>
+                        <th>Posição</th>
+                        <th>Data de entrada</th>
+                        <th>Ações</th>
+                        <th>TESTE</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+
+                <tbody>
+                    {% for jogador in jogadores %}
+                        <tr>
+                            <td>{{ jogador['nome'] }}</td>
+
+                            <td>
+                                <strong>{{ jogador['nickname'] }}</strong>
+                            </td>
+
+                            <td>{{ jogador['posicao'] }}</td>
+
+                            <td>{{ jogador['data_entrada'] }}</td>
+
+                            <td>
+                                <form
+                                    method="POST"
+                                    action="{{ url_for(
+                                        'equipa.remover_jogador',
+                                        equipa_id=equipa['id'],
+                                        jogador_id=jogador['id']
+                                    ) }}"
+                                    onsubmit="return confirm('Tens a certeza que queres remover este jogador da equipa?');"
+                                >
+                                    <button
+                                        type="submit"
+                                        class="danger-button"
+                                    >
+                                        Remover
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
     {% else %}
-        <p>Esta equipa ainda não tem jogadores associados.</p>
+
+        <p class="empty-message">
+            Esta equipa ainda não tem jogadores associados.
+        </p>
+
     {% endif %}
+</div>
 
-    <br>
+<!-- Voltar às equipas -->
+<a
+    class="team-button"
+    href="{{ url_for('equipa.listar') }}"
+>
+    ← Voltar às equipas
+</a>
 
-    <a href="{{ url_for('equipa.listar') }}">Voltar às equipas</a>
-
-</body>
-</html>
+{% endblock %}

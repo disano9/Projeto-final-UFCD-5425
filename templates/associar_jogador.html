@@ -1,69 +1,97 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <title>Associar Jogador - Dark Team Manager</title>
-</head>
-<body>
 
-    <h1>Associar Jogador a uma Equipa</h1>
+{% extends "base/layout.html" %}
 
-    {% with mensagens = get_flashed_messages(with_categories=true) %}
-        {% for categoria, mensagem in mensagens %}
-            <p>{{ mensagem }}</p>
-        {% endfor %}
-    {% endwith %}
+{% block title %}Associar Jogador | Dark Team Manager{% endblock %}
 
-    <form method="POST">
+{% block content %}
 
-        <label>Jogador:</label>
-        <select name="jogador_id" required>
-            <option value="">Selecionar jogador</option>
-            {% for jogador in jogadores %}
-                <option value="{{ jogador['id'] }}">
-                    {{ jogador['nickname'] }}
-                </option>
-            {% endfor %}
-        </select>
+<div class="page-heading">
+    <div>
+        <h1>Associar Jogador</h1>
+        <p>Adiciona jogadores ao plantel das equipas Dark Team.</p>
+    </div>
+</div>
 
-        <br><br>
+<div class="content-card">
+    <h2>Dados da associação</h2>
 
-        <label>Equipa:</label>
-        <select name="equipa_id" required>
-            <option value="">Selecionar equipa</option>
-            {% for equipa in equipas %}
-                <option value="{{ equipa['id'] }}">
-                    {{ equipa['nome'] }}
-                </option>
-            {% endfor %}
-        </select>
+    {% if jogadores and equipas %}
 
-        <br><br>
+        <form method="POST" class="form-container">
 
-        <label>Posição:</label>
-        <select name="posicao" required>
-            <option value="">Selecionar posição</option>
-            <option value="Top">Top</option>
-            <option value="Jungle">Jungle</option>
-            <option value="Mid">Mid</option>
-            <option value="ADC">ADC</option>
-            <option value="Support">Support</option>
-        </select>
+            <div class="form-group">
+                <label for="jogador_id">Jogador</label>
 
-        <br><br>
+                <select id="jogador_id" name="jogador_id" required>
+                    <option value="">Selecionar jogador</option>
 
-        <label>Data de entrada:</label>
-        <input type="date" name="data_entrada" required>
+                    {% for jogador in jogadores %}
+                        <option value="{{ jogador['id'] }}">
+                            {{ jogador['nickname'] }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
 
-        <br><br>
+            <div class="form-group">
+                <label for="equipa_id">Equipa</label>
 
-        <button type="submit">Associar Jogador</button>
+                <select id="equipa_id" name="equipa_id" required>
+                    <option value="">Selecionar equipa</option>
 
-    </form>
+                    {% for equipa in equipas %}
+                        <option value="{{ equipa['id'] }}">
+                            {{ equipa['nome'] }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
 
-    <br>
+            <div class="form-group">
+                <label for="posicao">Posição</label>
 
-    <a href="{{ url_for('equipa.listar') }}">Voltar às equipas</a>
+                <select id="posicao" name="posicao" required>
+                    <option value="">Selecionar posição</option>
+                    <option value="Top">Top</option>
+                    <option value="Jungle">Jungle</option>
+                    <option value="Mid">Mid</option>
+                    <option value="ADC">ADC</option>
+                    <option value="Support">Support</option>
+                </select>
+            </div>
 
-</body>
-</html>
+            <div class="form-group">
+                <label for="data_entrada">Data de entrada</label>
+
+                <input
+                    type="date"
+                    id="data_entrada"
+                    name="data_entrada"
+                    required
+                >
+            </div>
+
+            <button type="submit">
+                Associar Jogador
+            </button>
+
+        </form>
+
+    {% else %}
+
+        <p class="empty-message">
+            {% if not jogadores %}
+                Não existem jogadores disponíveis para associação.
+            {% else %}
+                Ainda não existem equipas registadas.
+            {% endif %}
+        </p>
+
+    {% endif %}
+</div>
+
+<a class="team-button" href="{{ url_for('equipa.listar') }}">
+    ← Voltar às equipas
+</a>
+
+{% endblock %}

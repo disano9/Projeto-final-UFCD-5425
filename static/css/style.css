@@ -667,3 +667,134 @@ button:hover {
     background: var(--primary);
     color: #080b10;
 }
+
+/* GESTÃO DE JOGADORES */
+
+.player-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+.player-card {
+    display: flex;
+    flex-direction: column;
+    padding: 22px;
+    background: linear-gradient(145deg, #142331, #0c141e);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    transition: .25s;
+}
+
+.player-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--primary);
+    box-shadow: 0 8px 25px rgba(0, 223, 255, 0.10);
+}
+
+.player-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.player-avatar {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 223, 255, 0.12);
+    border: 1px solid rgba(0, 223, 255, 0.3);
+    border-radius: 10px;
+    color: var(--primary);
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.player-status {
+    padding: 6px 10px;
+    background: rgba(0, 223, 255, 0.08);
+    border: 1px solid rgba(0, 223, 255, 0.2);
+    border-radius: 20px;
+    color: var(--primary);
+    font-size: 11px;
+}
+
+.player-card h3 {
+    font-size: 20px;
+    margin-bottom: 5px;
+    color: var(--primary);
+}
+
+.player-name {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.player-details {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 16px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 18px;
+}
+
+.player-details span {
+    display: block;
+    color: var(--text-muted);
+    font-size: 11px;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.player-details p {
+    color: var(--text-main);
+    font-size: 13px;
+    overflow-wrap: anywhere;
+}
+
+.player-button {
+    display: block;
+    margin-top: auto;
+    padding: 11px;
+    text-align: center;
+    background: rgba(0, 223, 255, 0.08);
+    border: 1px solid rgba(0, 223, 255, 0.25);
+    border-radius: 8px;
+    color: var(--primary);
+    font-size: 13px;
+    font-weight: bold;
+    transition: .2s;
+}
+
+.player-button:hover {
+    background: var(--primary);
+    color: #080b10;
+}
+
+
+/* Botão de remoção de jogadores */
+.danger-button {
+    background: linear-gradient(135deg, #dc2626, #991b1b);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    color: #ffffff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.danger-button:hover {
+    background: linear-gradient(135deg, #ef4444, #b91c1c);
+    box-shadow: 0 0 14px rgba(239, 68, 68, 0.25);
+}
+
+/* Organização do formulário na tabela */
+.table-container td form {
+    margin: 0;
+}
